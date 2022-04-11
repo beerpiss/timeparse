@@ -2,6 +2,13 @@ name: timeparse tests
 
 on: 
   push:
+    paths:
+    - '**.ts'
+    - 'jest.config.js'
+    - 'package-lock.json'
+    - 'package.json'
+    - 'tsconfig.json'
+    - '.github/workflows/test.yaml'
 
 jobs:
   test:
