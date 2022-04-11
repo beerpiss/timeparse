@@ -1,5 +1,5 @@
 {
-  "name": "timeparse",
+  "name": "@beerpsi/timeparse",
   "version": "0.0.1",
   "description": "A zero-dependency package to parse various time expressions",
   "main": "lib/index.js",
