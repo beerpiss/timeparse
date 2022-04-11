@@ -1,6 +1,5 @@
 {
   "name": "@beerpsi/timeparse",
-  "access": "public",
   "version": "0.0.1",
   "description": "A zero-dependency package to parse various time expressions",
   "main": "lib/index.js",
@@ -19,6 +18,9 @@
   "files": [
     "dist/**/*"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
   "devDependencies": {
     "@types/jest": "^27.4.1",
     "@typescript-eslint/eslint-plugin": "^5.18.0",
