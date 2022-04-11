@@ -194,6 +194,35 @@ test(
 )
 
 test(
+  'Parsing months', () => {
+    const result: number = 32 * 30 * 24 * 60 * 60
+    expect(timeparse('32m', 'months')).toBe(result)
+    expect(timeparse('32mo')).toBe(result)
+    expect(timeparse('32month')).toBe(result)
+    expect(timeparse('32months')).toBe(result)
+    expect(timeparse('32 mo')).toBe(result)
+    expect(timeparse('32 month')).toBe(result)
+    expect(timeparse('32 months')).toBe(result)
+
+    expect(timeparse('+32m', 'months')).toBe(result)
+    expect(timeparse('+32mo')).toBe(result)
+    expect(timeparse('+32month')).toBe(result)
+    expect(timeparse('+32months')).toBe(result)
+    expect(timeparse('+32 mo')).toBe(result)
+    expect(timeparse('+32 month')).toBe(result)
+    expect(timeparse('+32 months')).toBe(result)
+
+    expect(timeparse('-32m', 'months')).toBe(result * -1)
+    expect(timeparse('-32mo')).toBe(result * -1)
+    expect(timeparse('-32month')).toBe(result * -1)
+    expect(timeparse('-32months')).toBe(result * -1)
+    expect(timeparse('-32 mo')).toBe(result * -1)
+    expect(timeparse('-32 month')).toBe(result * -1)
+    expect(timeparse('-32 months')).toBe(result * -1)
+  }
+)
+
+test(
   'Parsing complex time expressions', () => {
     const result: number = 16 * 60 * 60 + 32 * 60 + 64
     expect(timeparse('16h 32m 64s')).toBe(result)
@@ -429,6 +458,36 @@ test(
 )
 
 test(
+  'Timeparse test case 18', () => {
+    const result: number = 30 * 24 * 60 * 60 + 3 * 7 * 24 * 60 * 60 + 2 * 24 * 60 * 60 + 32 * 60 * 60
+    expect(timeparse('1m3w2d32h')).toBe(result)
+    expect(timeparse('+1m3w2d32h')).toBe(result)
+    expect(timeparse('-1m3w2d32h')).toBe(-result)
+    expect(timeparse('1m 3w 2d 32h')).toBe(result)
+    expect(timeparse('+1m 3w 2d 32h')).toBe(result)
+    expect(timeparse('-1m 3w 2d 32h')).toBe(-result)
+    expect(timeparse('1 m 3 w 2 d 32 h')).toBe(result)
+    expect(timeparse('+1 m 3 w 2 d 32 h')).toBe(result)
+    expect(timeparse('-1 m 3 w 2 d 32 h')).toBe(-result)
+  }
+)
+
+test(
+  'Timeparse test case 19', () => {
+    const result: number = 30 * 24 * 60 * 60 + 2 * 24 * 60 * 60 + 32 * 60 * 60
+    expect(timeparse('1m2d32h')).toBe(result)
+    expect(timeparse('+1m2d32h')).toBe(result)
+    expect(timeparse('-1m2d32h')).toBe(-result)
+    expect(timeparse('1m  2d 32h')).toBe(result)
+    expect(timeparse('+1m  2d 32h')).toBe(result)
+    expect(timeparse('-1m  2d 32h')).toBe(-result)
+    expect(timeparse('1 m 2 d 32 h')).toBe(result)
+    expect(timeparse('+1 m 2 d 32 h')).toBe(result)
+    expect(timeparse('-1 m 2 d 32 h')).toBe(-result)
+  }
+)
+
+test(
   'Timeparse test bare seconds', () => {
     expect(timeparse(':13')).toBe(13)
     expect(timeparse('+:13')).toBe(13)
@@ -458,6 +517,14 @@ test(
     expect(timeparse('0:02', 'seconds')).toBe(2)
     expect(timeparse('+0:02', 'seconds')).toBe(2)
     expect(timeparse('-0:02', 'seconds')).toBe(-2)
+
+    expect(timeparse('4m5s', 'months')).toBe(4 * 60 + 5)
+    expect(timeparse('+4m5s', 'months')).toBe(4 * 60 + 5)
+    expect(timeparse('-4m5s', 'months')).toBe(- (4 * 60 + 5))
+
+    expect(timeparse('4m5wk', 'seconds')).toBe(4 * 30 * 24 * 60 * 60 + 5 * 7 * 24 * 60 * 60)
+    expect(timeparse('+4m5wk', 'seconds')).toBe(4 * 30 * 24 * 60 * 60 + 5 * 7 * 24 * 60 * 60)
+    expect(timeparse('-4m5wk', 'seconds')).toBe(- (4 * 30 * 24 * 60 * 60 + 5 * 7 * 24 * 60 * 60))
   }
 )
 

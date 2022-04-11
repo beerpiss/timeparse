@@ -24,6 +24,7 @@
  */
 
 const SIGN: RegExp = /\s*(?<sign>[+|-])?\s*(?<unsigned>.*)$/
+const MONTHS: RegExp = /(?<months>[\d.]+)\s*(?:months?|mo|m)/
 const WEEKS: RegExp = /(?<weeks>[\d.]+)\s*(?:weeks?|wks?|w)/
 const DAYS: RegExp = /(?<days>[\d.]+)\s*(?:days?|dys?|d)/
 const HOURS: RegExp = /(?<hours>[\d.]+)\s*(?:hours?|hrs?|h)/
@@ -40,13 +41,15 @@ const OPTSEP = (x: RegExp): RegExp => new RegExp(`(?:${x.source}\\s*(?:${SEPARAT
 
 const TIMEFORMATS: RegExp[] = [
   new RegExp(`${OPTSEP(WEEKS).source}\\s*${OPTSEP(DAYS).source}\\s*${OPTSEP(HOURS).source}\\s*${OPTSEP(MINS).source}\\s*${OPT(SECS).source}`),
+  new RegExp(`${OPTSEP(MONTHS).source}\\s*${OPTSEP(WEEKS).source}\\s*${OPTSEP(DAYS).source}\\s*${OPTSEP(HOURS).source}\\s*${OPTSEP(MINS).source}\\s*${OPT(SECS).source}`),
   DAYCLOCK,
-  new RegExp(`${OPTSEP(WEEKS).source}\\s*${OPTSEP(DAYS).source}\\s*${HOURCLOCK.source}`),
+  new RegExp(`${OPTSEP(MONTHS).source}\\s*${OPTSEP(WEEKS).source}\\s*${OPTSEP(DAYS).source}\\s*${HOURCLOCK.source}`),
   MINCLOCK,
   SECCLOCK
 ]
 
 const MULTIPLIERS: Record<string, number> = {
+  months: 30 * 24 * 60 * 60,
   weeks: 60 * 60 * 24 * 7,
   days: 60 * 60 * 24,
   hours: 60 * 60,
@@ -55,6 +58,7 @@ const MULTIPLIERS: Record<string, number> = {
 }
 
 export interface TimeparseRecord {
+  months?: string | number;
   weeks?: string | number;
   days?: string | number;
   hours?: string | number;
@@ -84,17 +88,37 @@ function interpretAsMinutes(sval: string, mdict: TimeparseRecord): TimeparseReco
 }
 
 /**
+ * Times like "1m" is ambiguous; do they represent minutes, or months?
+ * By default, this library assumes the former.
+ * Call this function after parsing out a TimeparseRecord to change that assumption.
+ * @param {string} sval - The time expression to parse
+ * @param {TimeparseRecord} mdict - The parsed time expression
+ * @returns {TimeparseRecord} - The parsed time expression, with the assumption changed
+ */
+function interpretAsMonths(sval: string, mdict: TimeparseRecord): TimeparseRecord {
+  if (sval.split('m').length - 1 === 1
+      && mdict.months === undefined
+      && mdict.weeks === undefined
+      && mdict.days === undefined
+      && mdict.secs === undefined) {
+    mdict.months = mdict.mins
+    delete mdict.mins
+  }
+  return mdict
+}
+
+/**
  * Parse a time expression into a number of seconds.
  * If possible, the return value is a whole number, otherwise it is a float.
  * Reeturns undefined if a time expression cannot be parsed
  * @param {string} sval - The time expression to parse
- * @param {'seconds' | 'minutes'} granularity - If granularity is specified as minutes,
+ * @param {'seconds' | 'minutes' | 'months'} granularity - If granularity is specified as minutes,
  *   then ambiguous times like "1:22" are interpreted as hours and minutes.
  *   Otherwise, they are considered as minutes and seconds.
  * @returns {number | undefined} - The number of seconds/minutes represented by the time expression,
  *   or undefined if the time expression cannot be parsed
  */
-export function timeparse(sval: string, granularity: 'seconds' | 'minutes' = 'seconds'): number | undefined {
+export function timeparse(sval: string, granularity: 'seconds' | 'minutes' | 'months' = 'seconds'): number | undefined {
   const match: RegExpMatchArray | null = sval.match(SIGN)
   const sign: number = match?.groups?.sign === '-' ? -1 : 1
   const timeval = match?.groups?.unsigned
@@ -104,7 +128,9 @@ export function timeparse(sval: string, granularity: 'seconds' | 'minutes' = 'se
     if (match?.[0]?.trim() && match?.[0]?.trim() === timeval) {
       const mdict: TimeparseRecord = granularity === 'minutes'
         ? interpretAsMinutes(String(timeval), <TimeparseRecord>match.groups)
-        : <TimeparseRecord>match.groups
+        : granularity === 'months'
+          ? interpretAsMonths(String(timeval), <TimeparseRecord>match.groups)
+          : <TimeparseRecord>match.groups
       // Filter out undefined values
       Object.keys(mdict).forEach((key) => mdict[key as keyof TimeparseRecord] === undefined && delete mdict[key as keyof TimeparseRecord])
       // Check if all fields are ints
