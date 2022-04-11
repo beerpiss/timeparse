@@ -1,12 +1,17 @@
 {
   "name": "@beerpsi/timeparse",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A zero-dependency package to parse various time expressions",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "npx jest",
-    "build": "tsc"
+    "build": "tsc",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run test",
+    "preversion": "npm run test",
+    "version": "git add -A src",
+    "postversion": "git push && git push --tags"
   },
   "keywords": [
     "text",
