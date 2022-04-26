@@ -1,28 +1,3 @@
-/**
- * The MIT License (MIT)
- *
- * Copyright (c) 2014 Will Roberts
- *
- * Permission is hereby granted, free of charge, to any person obtaining
- * a copy of this software and associated documentation files (the
- * "Software"), to deal in the Software without restriction, including
- * without limitation the rights to use, copy, modify, merge, publish,
- * distribute, sublicense, and/or sell copies of the Software, and to
- * permit persons to whom the Software is furnished to do so, subject to
- * the following conditions:
- *
- * The above copyright notice and this permission notice shall be
- * included in all copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
- * NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
- * LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
- * OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
- * WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
- */
-
 const SIGN: RegExp = /\s*(?<sign>[+|-])?\s*(?<unsigned>.*)$/
 const MONTHS: RegExp = /(?<months>[\d.]+)\s*(?:months?|mo|m)/
 const WEEKS: RegExp = /(?<weeks>[\d.]+)\s*(?:weeks?|wks?|w)/
@@ -58,12 +33,12 @@ const MULTIPLIERS: Record<string, number> = {
 }
 
 export interface TimeparseRecord {
-  months?: string | number;
-  weeks?: string | number;
-  days?: string | number;
-  hours?: string | number;
-  mins?: string | number;
-  secs?: string | number;
+  months?: number;
+  weeks?: number;
+  days?: number;
+  hours?: number;
+  mins?: number;
+  secs?: number;
 }
 
 /**
@@ -122,32 +97,36 @@ export function timeparse(sval: string, granularity: 'seconds' | 'minutes' | 'mo
   const match: RegExpMatchArray | null = sval.match(SIGN)
   const sign: number = match?.groups?.sign === '-' ? -1 : 1
   const timeval = match?.groups?.unsigned
-  for (const i in TIMEFORMATS) {
-    const timefmt = TIMEFORMATS[i]
+  return TIMEFORMATS.map((timefmt: RegExp) => {
     const match: RegExpMatchArray | null | undefined = timeval?.match(timefmt)
-    if (match?.[0]?.trim() && match?.[0]?.trim() === timeval) {
+    if (match?.groups && match?.[0]?.trim() === timeval) {
+      const groups = Object.fromEntries(
+        Object.entries(match.groups)
+          .filter(([_, value]: [string, string | undefined]) => value !== undefined)
+          .map(([key, value]: [string, string]) => [key, Number(value)])
+      )
       const mdict: TimeparseRecord = granularity === 'minutes'
-        ? interpretAsMinutes(String(timeval), <TimeparseRecord>match.groups)
+        ? interpretAsMinutes(String(timeval), groups)
         : granularity === 'months'
-          ? interpretAsMonths(String(timeval), <TimeparseRecord>match.groups)
-          : <TimeparseRecord>match.groups
-      // Filter out undefined values
-      Object.keys(mdict).forEach((key) => mdict[key as keyof TimeparseRecord] === undefined && delete mdict[key as keyof TimeparseRecord])
-      // Check if all fields are ints
-      if (Object.values(mdict).every((val: string | number) => val === undefined || Number.isInteger(Number(val)))) {
-        return sign * Object.keys(mdict)
-          .map((key: string) => Number(mdict[key as keyof TimeparseRecord]) * MULTIPLIERS[key])
+          ? interpretAsMonths(String(timeval), groups)
+          : groups
+      if (Object.values(mdict).every((val: number) => val === undefined || Number.isInteger(Number(val)))) {
+        return sign * Object.entries(mdict)
+          .map(([key, value]: [string, number]) => value * MULTIPLIERS[key])
           .reduce((a: number, b: number) => a + b)
       } else if (mdict.secs === undefined || Number.isInteger(mdict.secs)) {
-        return sign * Math.round(Object.keys(mdict)
-          .map((key: string) => key !== 'secs' ? Number(mdict[key as keyof TimeparseRecord]) * MULTIPLIERS[key] : 0)
-          .reduce((a: number, b: number) => a + b) + Number(mdict.secs ?? 0)
+        return sign * Math.round(Object.entries(mdict)
+          .map(([key, value]: [string, number]) => key !== 'secs' ? value * MULTIPLIERS[key] : 0)
+          .reduce((a: number, b: number) => a + b) + (mdict.secs ?? 0)
         )
       } else {
-        return sign * Object.keys(mdict)
-          .map((key: string) => Number(mdict[key as keyof TimeparseRecord]) * MULTIPLIERS[key])
+        return sign * Object.entries(mdict)
+          .map(([key, value]: [string, number]) => value * MULTIPLIERS[key])
           .reduce((a: number, b: number) => a + b)
       }
+    } else {
+      return 0
     }
-  }
+  })
+    .find(element => element)
 }
