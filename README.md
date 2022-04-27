@@ -63,6 +63,6 @@ A number of milliseconds can be converted back to a date object:
 > import { timeparse } from '@beerpsi/timeparse';
 > timeparse('1 day, 14:20:16');
 138016000
-> new Date(1000); // Date object takes a number of miliseconds
+> new Date(138016000); // Date object takes a number of miliseconds
 1970-01-02T14:20:16.000Z
 ```
