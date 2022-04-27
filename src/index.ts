@@ -41,6 +41,8 @@ export interface TimeparseRecord {
   secs?: number;
 }
 
+Object.fromEntries = (arr: Iterable<readonly [PropertyKey, any]>): { [k: string]: any } => Object.assign({}, ...Array.from(arr, ([k, v]) => ({ [k]: v })))
+
 /**
  * Times like "1:22" are ambiguous; do they represent minutes and seconds, or hours and minutes?
  * By default, this library assumes the latter.
