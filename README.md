@@ -50,19 +50,19 @@ The single exported function `timeparse()` can parse time expressions like the f
 Check all the [test cases](https://github.com/beerpiss/timeparse/blob/trunk/tests/index.test.ts) 
 to see all the capabilities of this function.
 
-Just like the original `pytimeparse`, it returns the time as a number of seconds (integer, or floating-point
+Just like the original `pytimeparse`, it returns the time as a number of milliseconds (integer, or floating-point
 if not possible):
 ```js
 > import { timeparse } from '@beerpsi/timeparse';
 > timeparse('1.2 minutes');
-72
+72000
 ```
 
-A number of seconds can be converted back to a date object:
+A number of milliseconds can be converted back to a date object:
 ```js
 > import { timeparse } from '@beerpsi/timeparse';
 > timeparse('1 day, 14:20:16');
-138016
-> new Date(138016 * 1000); // Date object takes a number of miliseconds
+138016000
+> new Date(1000); // Date object takes a number of miliseconds
 1970-01-02T14:20:16.000Z
 ```

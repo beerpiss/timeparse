@@ -24,12 +24,12 @@ const TIMEFORMATS: RegExp[] = [
 ]
 
 const MULTIPLIERS: Record<string, number> = {
-  months: 30 * 24 * 60 * 60,
-  weeks: 60 * 60 * 24 * 7,
-  days: 60 * 60 * 24,
-  hours: 60 * 60,
-  mins: 60,
-  secs: 1
+  months: 30 * 24 * 60 * 60 * 1000,
+  weeks: 60 * 60 * 24 * 7 * 1000,
+  days: 60 * 60 * 24 * 1000,
+  hours: 60 * 60 * 1000,
+  mins: 60 * 1000,
+  secs: 1 * 1000
 }
 
 export interface TimeparseRecord {

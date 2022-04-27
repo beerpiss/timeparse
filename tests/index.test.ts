@@ -2,7 +2,7 @@ import { timeparse } from '../src'
 
 test(
   'Parsing seconds', () => {
-    const result: number = 32
+    const result: number = 32000
     expect(timeparse('32')).toBe(result)
     expect(timeparse('32s')).toBe(result)
     expect(timeparse('32sec')).toBe(result)
@@ -43,7 +43,7 @@ test(
 
 test(
   'Parsing minutes', () => {
-    const result: number = 32 * 60
+    const result: number = 32 * 60 * 1000
     expect(timeparse('32m')).toBe(result)
     expect(timeparse('32min')).toBe(result)
     expect(timeparse('32mins')).toBe(result)
@@ -81,7 +81,7 @@ test(
 
 test(
   'Parsing hours', () => {
-    const result: number = 32 * 60 * 60
+    const result: number = 32 * 60 * 60 * 1000
     expect(timeparse('32h')).toBe(result)
     expect(timeparse('32hr')).toBe(result)
     expect(timeparse('32hrs')).toBe(result)
@@ -119,7 +119,7 @@ test(
 
 test(
   'Parsing days', () => {
-    const result: number = 32 * 24 * 60 * 60
+    const result: number = 32 * 24 * 60 * 60 * 1000
     expect(timeparse('32d')).toBe(result)
     expect(timeparse('32dy')).toBe(result)
     expect(timeparse('32dys')).toBe(result)
@@ -157,7 +157,7 @@ test(
 
 test(
   'Parsing weeks', () => {
-    const result: number = 32 * 7 * 24 * 60 * 60
+    const result: number = 32 * 7 * 24 * 60 * 60 * 1000
     expect(timeparse('32w')).toBe(result)
     expect(timeparse('32wk')).toBe(result)
     expect(timeparse('32wks')).toBe(result)
@@ -195,7 +195,7 @@ test(
 
 test(
   'Parsing months', () => {
-    const result: number = 32 * 30 * 24 * 60 * 60
+    const result: number = 32 * 30 * 24 * 60 * 60 * 1000
     expect(timeparse('32m', 'months')).toBe(result)
     expect(timeparse('32mo')).toBe(result)
     expect(timeparse('32month')).toBe(result)
@@ -224,7 +224,7 @@ test(
 
 test(
   'Parsing complex time expressions', () => {
-    const result: number = 16 * 60 * 60 + 32 * 60 + 64
+    const result: number = (16 * 60 * 60 + 32 * 60 + 64) * 1000
     expect(timeparse('16h 32m 64s')).toBe(result)
     expect(timeparse('16h32m64s')).toBe(result)
   }
@@ -232,117 +232,117 @@ test(
 
 test(
   'Timeparse test case 2', () => {
-    expect(timeparse('2h32m')).toBe(9120)
-    expect(timeparse('+2h32m')).toBe(9120)
-    expect(timeparse('-2h32m')).toBe(-9120)
+    expect(timeparse('2h32m')).toBe(9120000)
+    expect(timeparse('+2h32m')).toBe(9120000)
+    expect(timeparse('-2h32m')).toBe(-9120000)
   }
 )
 
 test(
   'Timeparse test case 3', () => {
-    expect(timeparse('3d2h32m')).toBe(268320)
-    expect(timeparse('+3d2h32m')).toBe(268320)
-    expect(timeparse('-3d2h32m')).toBe(-268320)
+    expect(timeparse('3d2h32m')).toBe(268320000)
+    expect(timeparse('+3d2h32m')).toBe(268320000)
+    expect(timeparse('-3d2h32m')).toBe(-268320000)
   }
 )
 
 test(
   'Timeparse test case 4', () => {
-    expect(timeparse('1w3d2h32m')).toBe(873120)
-    expect(timeparse('+1w3d2h32m')).toBe(873120)
-    expect(timeparse('-1w3d2h32m')).toBe(-873120)
-    expect(timeparse('1w 3d 2h 32m')).toBe(873120)
-    expect(timeparse('+1w 3d 2h 32m')).toBe(873120)
-    expect(timeparse('-1w 3d 2h 32m')).toBe(-873120)
-    expect(timeparse('1 w 3 d 2 h 32 m')).toBe(873120)
-    expect(timeparse('+1 w 3 d 2 h 32 m')).toBe(873120)
-    expect(timeparse('-1 w 3 d 2 h 32 m')).toBe(-873120)
+    expect(timeparse('1w3d2h32m')).toBe(873120000)
+    expect(timeparse('+1w3d2h32m')).toBe(873120000)
+    expect(timeparse('-1w3d2h32m')).toBe(-873120000)
+    expect(timeparse('1w 3d 2h 32m')).toBe(873120000)
+    expect(timeparse('+1w 3d 2h 32m')).toBe(873120000)
+    expect(timeparse('-1w 3d 2h 32m')).toBe(-873120000)
+    expect(timeparse('1 w 3 d 2 h 32 m')).toBe(873120000)
+    expect(timeparse('+1 w 3 d 2 h 32 m')).toBe(873120000)
+    expect(timeparse('-1 w 3 d 2 h 32 m')).toBe(-873120000)
   }
 )
 
 test(
   'Timeparse test case 5', () => {
-    expect(timeparse('4:13')).toBe(253)
-    expect(timeparse('+4:13')).toBe(253)
-    expect(timeparse('-4:13')).toBe(-253)
+    expect(timeparse('4:13')).toBe(253000)
+    expect(timeparse('+4:13')).toBe(253000)
+    expect(timeparse('-4:13')).toBe(-253000)
   }
 )
 
 test(
   'Timeparse test case 6', () => {
-    expect(timeparse('4:13:02')).toBe(15182)
-    expect(timeparse('+4:13:02')).toBe(15182)
-    expect(timeparse('-4:13:02')).toBe(-15182)
+    expect(timeparse('4:13:02')).toBe(15182000)
+    expect(timeparse('+4:13:02')).toBe(15182000)
+    expect(timeparse('-4:13:02')).toBe(-15182000)
   }
 )
 
 test(
   'Timeparse test case 7', () => {
-    expect(timeparse('4:13:02.266')).toBeCloseTo(15182.266)
-    expect(timeparse('+4:13:02.266')).toBeCloseTo(15182.266)
-    expect(timeparse('-4:13:02.266')).toBeCloseTo(-15182.266)
+    expect(timeparse('4:13:02.266')).toBeCloseTo(15182266)
+    expect(timeparse('+4:13:02.266')).toBeCloseTo(15182266)
+    expect(timeparse('-4:13:02.266')).toBeCloseTo(-15182266)
   }
 )
 
 test(
   'Timeparse test case 8', () => {
-    expect(timeparse('2:04:13:02.266')).toBeCloseTo(187982.266)
-    expect(timeparse('+2:04:13:02.266')).toBeCloseTo(187982.266)
-    expect(timeparse('-2:04:13:02.266')).toBeCloseTo(-187982.266)
+    expect(timeparse('2:04:13:02.266')).toBeCloseTo(187982266)
+    expect(timeparse('+2:04:13:02.266')).toBeCloseTo(187982266)
+    expect(timeparse('-2:04:13:02.266')).toBeCloseTo(-187982266)
   }
 )
 
 test(
   'Timeparse test case 9', () => {
-    expect(timeparse('2 days,  4:13:02')).toBe(187982)
-    expect(timeparse('+2 days,  4:13:02')).toBe(187982)
-    expect(timeparse('-2 days,  4:13:02')).toBe(-187982)
+    expect(timeparse('2 days,  4:13:02')).toBe(187982000)
+    expect(timeparse('+2 days,  4:13:02')).toBe(187982000)
+    expect(timeparse('-2 days,  4:13:02')).toBe(-187982000)
   }
 )
 
 test(
   'Timeparse test case 10', () => {
-    expect(timeparse('2 days,  4:13:02.266')).toBeCloseTo(187982.266)
-    expect(timeparse('+2 days,  4:13:02.266')).toBeCloseTo(187982.266)
-    expect(timeparse('-2 days,  4:13:02.266')).toBeCloseTo(-187982.266)
+    expect(timeparse('2 days,  4:13:02.266')).toBeCloseTo(187982266)
+    expect(timeparse('+2 days,  4:13:02.266')).toBeCloseTo(187982266)
+    expect(timeparse('-2 days,  4:13:02.266')).toBeCloseTo(-187982266)
   }
 )
 
 test(
   'Timeparse test case 11', () => {
-    expect(timeparse('5hr34m56s')).toBe(20096)
-    expect(timeparse('+5hr34m56s')).toBe(20096)
-    expect(timeparse('-5hr34m56s')).toBe(-20096)
+    expect(timeparse('5hr34m56s')).toBe(20096000)
+    expect(timeparse('+5hr34m56s')).toBe(20096000)
+    expect(timeparse('-5hr34m56s')).toBe(-20096000)
   }
 )
 
 test(
   'Timeparse test case 12', () => {
-    expect(timeparse('5 hours, 34 minutes, 56 seconds')).toBe(20096)
-    expect(timeparse('+5 hours, 34 minutes, 56 seconds')).toBe(20096)
-    expect(timeparse('-5 hours, 34 minutes, 56 seconds')).toBe(-20096)
+    expect(timeparse('5 hours, 34 minutes, 56 seconds')).toBe(20096000)
+    expect(timeparse('+5 hours, 34 minutes, 56 seconds')).toBe(20096000)
+    expect(timeparse('-5 hours, 34 minutes, 56 seconds')).toBe(-20096000)
   }
 )
 
 test(
   'Timeparse test case 13', () => {
-    expect(timeparse('5 hrs, 34 mins, 56 secs')).toBe(20096)
-    expect(timeparse('+5 hrs, 34 mins, 56 secs')).toBe(20096)
-    expect(timeparse('-5 hrs, 34 mins, 56 secs')).toBe(-20096)
+    expect(timeparse('5 hrs, 34 mins, 56 secs')).toBe(20096000)
+    expect(timeparse('+5 hrs, 34 mins, 56 secs')).toBe(20096000)
+    expect(timeparse('-5 hrs, 34 mins, 56 secs')).toBe(-20096000)
   }
 )
 
 test(
   'Timeparse test case 14', () => {
-    expect(timeparse('2 days, 5 hours, 34 minutes, 56 seconds')).toBe(192896)
-    expect(timeparse('+2 days, 5 hours, 34 minutes, 56 seconds')).toBe(192896)
-    expect(timeparse('-2 days, 5 hours, 34 minutes, 56 seconds')).toBe(-192896)
+    expect(timeparse('2 days, 5 hours, 34 minutes, 56 seconds')).toBe(192896000)
+    expect(timeparse('+2 days, 5 hours, 34 minutes, 56 seconds')).toBe(192896000)
+    expect(timeparse('-2 days, 5 hours, 34 minutes, 56 seconds')).toBe(-192896000)
   }
 )
 
 test(
   'Timeparse test case 15', () => {
-    const result: number = 1.75
+    const result: number = 1750
     expect(timeparse('1.75')).toBeCloseTo(result)
     expect(timeparse('1.75s')).toBeCloseTo(result)
     expect(timeparse('1.75sec')).toBeCloseTo(result)
@@ -383,7 +383,7 @@ test(
 
 test(
   'Timeparse test case 16', () => {
-    const result: number = 1.2 * 60
+    const result: number = 1.2 * 60 * 1000
     expect(timeparse('1.2m')).toBeCloseTo(result)
     expect(timeparse('1.2min')).toBeCloseTo(result)
     expect(timeparse('1.2mins')).toBeCloseTo(result)
@@ -421,7 +421,7 @@ test(
 
 test(
   'Timeparse test case 17', () => {
-    const result: number = 5.6 * 7 * 24 * 60 * 60
+    const result: number = 5.6 * 7 * 24 * 60 * 60 * 1000
     expect(timeparse('5.6w')).toBeCloseTo(result)
     expect(timeparse('5.6wk')).toBeCloseTo(result)
     expect(timeparse('5.6wks')).toBeCloseTo(result)
@@ -459,7 +459,7 @@ test(
 
 test(
   'Timeparse test case 18', () => {
-    const result: number = 30 * 24 * 60 * 60 + 3 * 7 * 24 * 60 * 60 + 2 * 24 * 60 * 60 + 32 * 60 * 60
+    const result: number = (30 * 24 * 60 * 60 + 3 * 7 * 24 * 60 * 60 + 2 * 24 * 60 * 60 + 32 * 60 * 60) * 1000
     expect(timeparse('1m3w2d32h')).toBe(result)
     expect(timeparse('+1m3w2d32h')).toBe(result)
     expect(timeparse('-1m3w2d32h')).toBe(-result)
@@ -474,7 +474,7 @@ test(
 
 test(
   'Timeparse test case 19', () => {
-    const result: number = 30 * 24 * 60 * 60 + 2 * 24 * 60 * 60 + 32 * 60 * 60
+    const result: number = (30 * 24 * 60 * 60 + 2 * 24 * 60 * 60 + 32 * 60 * 60) * 1000
     expect(timeparse('1m2d32h')).toBe(result)
     expect(timeparse('+1m2d32h')).toBe(result)
     expect(timeparse('-1m2d32h')).toBe(-result)
@@ -489,42 +489,42 @@ test(
 
 test(
   'Timeparse test bare seconds', () => {
-    expect(timeparse(':13')).toBe(13)
-    expect(timeparse('+:13')).toBe(13)
-    expect(timeparse('-:13')).toBe(-13)
-    expect(timeparse('13')).toBe(13)
-    expect(timeparse('+13')).toBe(13)
-    expect(timeparse('-13')).toBe(-13)
+    expect(timeparse(':13')).toBe(13000)
+    expect(timeparse('+:13')).toBe(13000)
+    expect(timeparse('-:13')).toBe(-13000)
+    expect(timeparse('13')).toBe(13000)
+    expect(timeparse('+13')).toBe(13000)
+    expect(timeparse('-13')).toBe(-13000)
   }
 )
 
 test(
   'Timeparse test granularity (minutes)', () => {
-    expect(timeparse('4:32', 'minutes')).toBe(272 * 60)
-    expect(timeparse('+4:32', 'minutes')).toBe(272 * 60)
-    expect(timeparse('-4:32', 'minutes')).toBe(-272 * 60)
+    expect(timeparse('4:32', 'minutes')).toBe(272 * 60 * 1000)
+    expect(timeparse('+4:32', 'minutes')).toBe(272 * 60 * 1000)
+    expect(timeparse('-4:32', 'minutes')).toBe(-272 * 60 * 1000)
   }
 )
 
 test(
   'Checks that granularity does not apply inappropriately', () => {
-    expect(timeparse('4:32:02', 'minutes')).toBe(272 * 60 + 2)
-    expect(timeparse('+4:32:02', 'minutes')).toBe(272 * 60 + 2)
-    expect(timeparse('-4:32:02', 'minutes')).toBe(- (272 * 60 + 2))
-    expect(timeparse('7:02.223', 'minutes')).toBeCloseTo(7 * 60 + 2.223)
-    expect(timeparse('+7:02.223', 'minutes')).toBe(7 * 60 + 2.223)
-    expect(timeparse('-7:02.223', 'minutes')).toBe(- (7 * 60 + 2.223))
-    expect(timeparse('0:02', 'seconds')).toBe(2)
-    expect(timeparse('+0:02', 'seconds')).toBe(2)
-    expect(timeparse('-0:02', 'seconds')).toBe(-2)
+    expect(timeparse('4:32:02', 'minutes')).toBe((272 * 60 + 2) * 1000)
+    expect(timeparse('+4:32:02', 'minutes')).toBe((272 * 60 + 2) * 1000)
+    expect(timeparse('-4:32:02', 'minutes')).toBe(- (272 * 60 + 2) * 1000)
+    expect(timeparse('7:02.223', 'minutes')).toBeCloseTo((7 * 60 + 2.223) * 1000)
+    expect(timeparse('+7:02.223', 'minutes')).toBe((7 * 60 + 2.223) * 1000)
+    expect(timeparse('-7:02.223', 'minutes')).toBe(- (7 * 60 + 2.223) * 1000)
+    expect(timeparse('0:02', 'seconds')).toBe(2000)
+    expect(timeparse('+0:02', 'seconds')).toBe(2000)
+    expect(timeparse('-0:02', 'seconds')).toBe(-2000)
 
-    expect(timeparse('4m5s', 'months')).toBe(4 * 60 + 5)
-    expect(timeparse('+4m5s', 'months')).toBe(4 * 60 + 5)
-    expect(timeparse('-4m5s', 'months')).toBe(- (4 * 60 + 5))
+    expect(timeparse('4m5s', 'months')).toBe((4 * 60 + 5) * 1000)
+    expect(timeparse('+4m5s', 'months')).toBe((4 * 60 + 5) * 1000)
+    expect(timeparse('-4m5s', 'months')).toBe(- (4 * 60 + 5) * 1000)
 
-    expect(timeparse('4m5wk', 'seconds')).toBe(4 * 30 * 24 * 60 * 60 + 5 * 7 * 24 * 60 * 60)
-    expect(timeparse('+4m5wk', 'seconds')).toBe(4 * 30 * 24 * 60 * 60 + 5 * 7 * 24 * 60 * 60)
-    expect(timeparse('-4m5wk', 'seconds')).toBe(- (4 * 30 * 24 * 60 * 60 + 5 * 7 * 24 * 60 * 60))
+    expect(timeparse('4m5wk', 'seconds')).toBe((4 * 30 * 24 * 60 * 60 + 5 * 7 * 24 * 60 * 60) * 1000)
+    expect(timeparse('+4m5wk', 'seconds')).toBe((4 * 30 * 24 * 60 * 60 + 5 * 7 * 24 * 60 * 60) * 1000)
+    expect(timeparse('-4m5wk', 'seconds')).toBe(- (4 * 30 * 24 * 60 * 60 + 5 * 7 * 24 * 60 * 60) * 1000)
   }
 )
 
