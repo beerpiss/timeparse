@@ -1,6 +1,6 @@
 {
   "name": "@beerpsi/timeparse",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "A zero-dependency package to parse various time expressions",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
