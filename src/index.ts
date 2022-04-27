@@ -23,14 +23,14 @@ const TIMEFORMATS: RegExp[] = [
   SECCLOCK
 ]
 
-const MULTIPLIERS: Record<string, number> = {
+const MULTIPLIERS: Record<string, number> = Object.freeze({
   months: 30 * 24 * 60 * 60 * 1000,
   weeks: 60 * 60 * 24 * 7 * 1000,
   days: 60 * 60 * 24 * 1000,
   hours: 60 * 60 * 1000,
   mins: 60 * 1000,
-  secs: 1 * 1000
-}
+  secs: 1000
+})
 
 export interface TimeparseRecord {
   months?: number;
@@ -108,11 +108,11 @@ export function timeparse(sval: string, granularity: 'seconds' | 'minutes' | 'mo
           .map(([key, value]: [string, string]) => [key, Number(value)])
       )
       const mdict: TimeparseRecord = granularity === 'minutes'
-        ? interpretAsMinutes(String(timeval), groups)
+        ? interpretAsMinutes(timeval, groups)
         : granularity === 'months'
-          ? interpretAsMonths(String(timeval), groups)
+          ? interpretAsMonths(timeval, groups)
           : groups
-      if (Object.values(mdict).every((val: number) => val === undefined || Number.isInteger(Number(val)))) {
+      if (Object.values(mdict).every((val: number) => val === undefined || Number.isInteger(val))) {
         return sign * Object.entries(mdict)
           .map(([key, value]: [string, number]) => value * MULTIPLIERS[key])
           .reduce((a: number, b: number) => a + b)
